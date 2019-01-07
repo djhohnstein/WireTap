@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WireTap", "WireTap\WireTap.csproj", "{B5067468-F656-450A-B29C-1C84CFE8DDE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5067468-F656-450A-B29C-1C84CFE8DDE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5067468-F656-450A-B29C-1C84CFE8DDE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5067468-F656-450A-B29C-1C84CFE8DDE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5067468-F656-450A-B29C-1C84CFE8DDE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FD12B9A-3228-4D35-95EB-BA3C5504B8FC}
+	EndGlobalSection
+EndGlobal
