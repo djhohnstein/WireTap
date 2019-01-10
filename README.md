@@ -5,6 +5,7 @@ WireTap is a .NET 4.0 project to consolidate several functions used to interact 
 	- Screenshots (Display + WebCam Imaging)
 	- Audio (Both line-in and line-out)
 	- Keylogging
+	- Activate voice recording when the user says a keyword phrase.
 
 For each function, WireTap will write the resultant file into the temp directory with the appropriate suffix.
 
