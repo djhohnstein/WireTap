@@ -40,4 +40,7 @@ Examples:
 
     Start the keylogger:
         WireTap.exe keylogger
+
+    Start keyword listener with a custom set of words:
+        WireTap.exe listen_for_passwords oil,password,pin
 ```
