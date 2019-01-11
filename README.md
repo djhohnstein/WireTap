@@ -21,7 +21,7 @@ Arguments can be one (and only one) of the following:
     record_sys [10s]     - Record audio from the system speakers (line-out).
                           Time suffix can be s/m/h.
 
-    record_audio [10s]   - Record audio from both the microphone and the speakers and combine into one file.
+    record_audio [10s]   - Record audio from both the microphone and the speakers.
                            Time suffix can be s/m/h.
 
     capture_screen       - Screenshot the current user's screen.
