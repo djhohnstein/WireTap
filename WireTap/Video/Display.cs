@@ -15,16 +15,25 @@ namespace WireTap
         private static VideoCaptureDevice videoSource;
         public static void CaptureImage(string outFile)
         {
-            Rectangle bounds = Screen.GetBounds(Point.Empty);
             try
             {
-                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                // Determine the size of the "virtual screen", which includes all monitors.
+                int screenLeft = SystemInformation.VirtualScreen.Left;
+                int screenTop = SystemInformation.VirtualScreen.Top;
+                int screenWidth = SystemInformation.VirtualScreen.Width;
+                int screenHeight = SystemInformation.VirtualScreen.Height;
+
+                // Create a bitmap of the appropriate size to receive the screenshot.
+                using (Bitmap bmp = new Bitmap(screenWidth, screenHeight))
                 {
-                    using (Graphics g = Graphics.FromImage(bitmap))
+                    // Draw the screenshot into our bitmap.
+                    using (Graphics g = Graphics.FromImage(bmp))
                     {
-                        g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                        g.CopyFromScreen(screenLeft, screenTop, 0, 0, bmp.Size);
                     }
-                    bitmap.Save(outFile, ImageFormat.Jpeg);
+
+                    // Do something with the Bitmap here, like save it to a file:
+                    bmp.Save(outFile, ImageFormat.Jpeg);
                 }
             }
             catch (Exception ex)
