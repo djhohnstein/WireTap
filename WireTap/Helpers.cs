@@ -68,7 +68,7 @@ Arguments can be one (and only one) of the following:
 Examples:
     Record all audio for 30 seconds:
         WireTap.exe record_audio 30s
-
+\
     Start the keylogger:
         WireTap.exe capture_keystrokes
 
